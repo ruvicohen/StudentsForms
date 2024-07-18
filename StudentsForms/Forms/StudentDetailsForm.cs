@@ -65,9 +65,37 @@ namespace StudentsForms.Forms
 
         private void button2_Click(object sender, EventArgs e)
         { 
-            //string query = "insert into StudentsINCours values (@StudentID, @CourseID)";
-            //SqlParameter[] parameters = { new SqlParameter("@StudentID", ) };
+            string query = "insert into StudentsINCours values (@StudentID, @CourseID)";
+            SqlParameter[] parameters = {
+                new SqlParameter("@StudentID", Student.Id),
+                new SqlParameter("@CourseID", int.Parse(textBoxCourse.Text))
+            };
+            bool isInsert = dbContext.ExecuteNonQuery(query, parameters);
+            if (isInsert)
+            {
+                string query1 = "select Price from Courses where ID = @ID";
+                SqlParameter[] parameters1 = { new SqlParameter("@ID", int.Parse(textBoxCourse.Text)) };
+                DataTable price = dbContext.MakeQuery(query1, parameters1);
+                int price1 = (int)price.Rows[0][0];
+                string query2 = "update Students set Debt = Debt + @price where ID = @ID";
+                SqlParameter[] parameters2 = { new SqlParameter("@Price", price1) , new SqlParameter("@ID", Student.Id) };
+                bool isUpdate = dbContext.ExecuteNonQuery(query2, parameters2);
+                if (isUpdate)
+                {
+                    MessageBox.Show("ההרשמה בוצעה בהצלחה");
+                    labelDebt.Text = $"היתרה לתשלום היא {Student.Debt + price1}";
 
+                }
+                else
+                {
+
+                    MessageBox.Show("Error"); 
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error");
+            }
         }
     }
 }

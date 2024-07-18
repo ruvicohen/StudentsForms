@@ -126,9 +126,9 @@
             label5.AutoSize = true;
             label5.Location = new Point(561, 411);
             label5.Name = "label5";
-            label5.Size = new Size(77, 20);
+            label5.Size = new Size(60, 20);
             label5.TabIndex = 10;
-            label5.Text = "שם הקורס";
+            label5.Text = "ID קורס";
             // 
             // button2
             // 
